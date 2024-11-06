@@ -5,13 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lab.awysocki</groupId>
-    <artifactId>lab01</artifactId>
-    <version>${project.parent.version}</version>
+    <artifactId>od-lab</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <modules>
+        <module>lab01/lab01</module>
+        <module>lab02</module>
+    </modules>
 
 </project>

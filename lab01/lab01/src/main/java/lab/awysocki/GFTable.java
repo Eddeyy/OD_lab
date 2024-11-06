@@ -1,5 +1,6 @@
 package lab.awysocki;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +25,13 @@ public class GFTable {
     }
 
     private List<Integer> findPrimeMultiplicativeOrderValues() {
-        return Arrays.stream(multiplicativeOrderTable).flatMapToInt(Arrays::stream).filter(
+
+        var a = Arrays.stream(multiplicativeOrderTable).flatMapToInt(Arrays::stream).boxed().toList();
+
+        return Arrays.stream(multiplicativeOrderTable).flatMapToInt(Arrays::stream).distinct()
+                .filter(
                 i -> i == (p - 1)
-        ).distinct().boxed().toList();
+                ).boxed().toList();
     }
 
     public int[][] getTable() {
@@ -64,13 +69,17 @@ public class GFTable {
         IntStream.range(0, p).forEach(
                 row -> IntStream.range(0, p).forEach(
                         col -> {
-                            int i = 0;
-                            while(true) {
-                                if(isMultiplicativeOrder(this.table[row][col], i, p)) {
-                                    tempTable[row][col] = i;
-                                    break;
+                            if(BigInteger.valueOf(this.table[row][col])
+                                    .gcd(BigInteger.valueOf(p))
+                                    .equals(BigInteger.ONE)) {
+                                int i = 1;
+                                while (true) {
+                                    if (isMultiplicativeOrder(this.table[row][col], i, p)) {
+                                        tempTable[row][col] = i;
+                                        break;
+                                    }
+                                    i++;
                                 }
-                                i++;
                             }
                         }
                 )
@@ -78,8 +87,23 @@ public class GFTable {
         return tempTable;
     }
 
-    private boolean isMultiplicativeOrder(int a, int e, int p) {
-        return Math.pow(a,e) == 1 % p;
+    public static boolean isMultiplicativeOrder(int a, int e, int p) {
+        return Math.pow(a,e) % p == 1 % p;
+    }
+
+    public static int findMultiplicativeOrder(int a, int p) {
+        int i = 1;
+        while (i != p) {
+            if (isMultiplicativeOrder(a, i, p)) {
+                return i;
+            }
+            i++;
+        }
+        return 0;
+    }
+
+    public int findMaxPeriod(int m) {
+        return (int) (Math.pow(p, m) - 1);
     }
 
     @Override
@@ -97,7 +121,7 @@ public class GFTable {
         );
         builder.append(String.format("\nMultiplicative orders the GFTable for operation %s and p = %d", this.op,this.table.length));
         builder.append("\n");
-        Arrays.stream(table).forEach(
+        Arrays.stream(multiplicativeOrderTable).forEach(
                 row -> {
                     Arrays.stream(row).forEach(
                             col -> builder.append(String.format("%d\t", col))

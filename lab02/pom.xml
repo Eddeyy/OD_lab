@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lab.awysocki</groupId>
-    <artifactId>lab01</artifactId>
+    <artifactId>lab02</artifactId>
     <version>${project.parent.version}</version>
 
     <properties>
@@ -13,5 +13,14 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>lab.awysocki</groupId>
+            <artifactId>lab01</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 
 </project>
